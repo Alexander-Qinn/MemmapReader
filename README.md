@@ -13,47 +13,127 @@ This is a memory map data structure, implemented from scratch,that directly allo
 To use the functions, we need to call the function in regards to an alias, in the case of the examples below we will be using M2D_F4, but you can replace that part of each function call with any alias in the M2D.py file.
 
 Before we test our code, we are given a pkl file at some path and when converted to a pandas dataframe will look like:
-
+#### Input:
 ```
 if __name__ == '__main__':
-  pandas_dataframe = pd.read_pickle(path)
+  pandas_dataframe = pd.read_pickle(path_to_pklfile)
   print(close)
 ```
-### Output:
+#### Output:
+```
+           20150105   20150106  20150107  20150108  20150109
+000001.SZ     16.02  15.780000     15.48     14.96     15.08
+000002.SZ     14.91  14.360000     14.23     13.59     13.45
+000004.SZ     15.69  16.459999     16.41     16.92     16.43
+000005.SZ       NaN        NaN       NaN       NaN       NaN
+000006.SZ      7.08   6.850000      6.86      6.78      6.70
+```
 
-This will read the csv file from the path from column sd to column ed and return a pandas dataframe
+### .\_\_read__()
+This will read the file from the path from column sd to column ed and return a pandas dataframe
+
+#### Input:
 ```
 if __name__ == '__main__':
-  pandas_dataframe = M2D_F4.__read__(path, sd, ed) 
+  pandas_dataframe = M2D_F4.__read__(filepath) 
   print(pandas_dataframe)
 ```
-### Output:
+#### Output:
+```
+           20150105   20150106  20150107  20150108  20150109
+000001.SZ     16.02  15.780000     15.48     14.96     15.08
+000002.SZ     14.91  14.360000     14.23     13.59     13.45
+000004.SZ     15.69  16.459999     16.41     16.92     16.43
+000005.SZ       NaN        NaN       NaN       NaN       NaN
+000006.SZ      7.08   6.850000      6.86      6.78      6.70
+```
 
-This will save the pandas_dataframe into some file path as a .m2d file (ie. [filename].m2d_f4)
+#### Input:
 ```
 if __name__ == '__main__':
-  pandas_dataframe = M2D_F4.__save__(pandas_dataframe, path) #
-  print(M2D_F4.__read__(path)) #This file can now be read by the read function.
+  pandas_dataframe = M2D_F4.__read__(filepath, 20150106, 20150108) 
+  print(pandas_dataframe)
 ```
-### Output:
+#### Output:
+```
+            20150106  20150107  20150108
+000001.SZ  15.780000     15.48     14.96
+000002.SZ  14.360000     14.23     13.59
+000004.SZ  16.459999     16.41     16.92
+000005.SZ        NaN       NaN       NaN
+000006.SZ   6.850000      6.86      6.78
+```
 
+### .\_\_save__()
+This will save the pandas_dataframe into some file path as a .m2d file (ie. [filename].m2d_f4)
+#### Input:
+```
+if __name__ == '__main__':
+  pandas_dataframe = M2D_F4.__read__(filepath, 20150106, 20150108) 
+  pandas_dataframe = M2D_F4.__save__(pandas_dataframe, newfilepath) 
+  print(M2D_F4.__read__(newfilepath)) #This file can now be read by the read function.
+```
+#### Output:
+```
+            20150106  20150107  20150108
+000001.SZ  15.780000     15.48     14.96
+000002.SZ  14.360000     14.23     13.59
+000004.SZ  16.459999     16.41     16.92
+000005.SZ        NaN       NaN       NaN
+000006.SZ   6.850000      6.86      6.78
+```
+
+#### Input:
+```
+if __name__ == '__main__':
+  pandas_dataframe = M2D_F4.__read__(filepath, 20150106, 20150108) 
+  pandas_dataframe = M2D_F4.__save__(pandas_dataframe.iloc[0:2,:], newfilepath) 
+  print(M2D_F4.__read__(newfilepath)) #This file can now be read by the read function.
+```
+#### Output:
+```
+           20150106  20150107  20150108
+000001.SZ     15.78     15.48     14.96
+000002.SZ     14.36     14.23     13.59
+
+```
+
+#### Input:
+```
+if __name__ == '__main__':
+  pandas_dataframe = M2D_F4.__read__(filepath, 20150106, 20150109) 
+  pandas_dataframe = M2D_F4.__save__(pandas_dataframe.iloc[0:2,:], newfilepath) 
+  print(M2D_F4.__read__(newfilepath)) #This file can now be read by the read function.
+```
+#### Output:
+```
+           20150106  20150107  20150108  20150109
+000001.SZ     15.78     15.48     14.96     15.08
+000002.SZ     14.36     14.23     13.59     13.45
+
+```
+
+### .\_\_update__()
 This will compare the dataframe and the m2d file corresponding to path and update all values with corresponding index, column to the updated dataframes values.
 
+#### Input:
 ```
 if __name__ == '__main__':
   pandas_dataframe = M2D_F4.__update__(pandas_dataframe, path) 
   print(M2D_F4.__read__(path))
 ```
-### Output:
+#### Output:
 
+### .\_\_upsert__()
 This does the same thing as update, except if a index column pair in the pandas_dataframe doesn't exist in the file then it simply adds that value into the dataframe as a new row column pair.
 
+#### Input:
 ```
 if __name__ == '__main__':
   pandas_dataframe = M2D_F4.__upsert__(pandas_dataframe, path)
   print(M2D_F4.__read__(path))
 ```
-### Output:
+#### Output:
 
 If you want to change the index and column labels or data types manually modify the dtype to whatever you need. In this instance SYMBOL_DTYPE is the index datatype and DATE_TYPE is the columns. For now the default has the index as Strings and the columns as ints, this is because the original version was meant for time-series stock data:
 
