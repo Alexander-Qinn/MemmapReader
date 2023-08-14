@@ -1,5 +1,7 @@
 from Memmap2Dim import *
 
+#This is a list of Memory Map Aliases
+
 ##########################################################################    
 """ np.bool """
 class M2D_B(M2D):
