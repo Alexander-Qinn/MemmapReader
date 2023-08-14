@@ -12,23 +12,32 @@ This is a memory map data structure, implemented from scratch,that directly allo
 ## Example Usages
 To use the functions, we need to call the function in regards to an alias, in the case of the examples below we will be using M2D_F4, but you can replace that part of each function call with any alias in the M2D.py file.
 
+This will read the csv file from the path from column sd to column ed and return a pandas dataframe
 ```
 if __name__ == '__main__':
-  #This will read the csv file from the path from column sd to column ed and return a pandas dataframe
   pandas_dataframe = M2D_F4.__read__(path, sd, ed) 
   print(pandas_dataframe)
+```
 
-  #This will save the pandas_dataframe into some file path as a .m2d file (ie. [filename].m2d_f4)
+This will save the pandas_dataframe into some file path as a .m2d file (ie. [filename].m2d_f4)
+```
+if __name__ == '__main__':
   pandas_dataframe = M2D_F4.__save__(pandas_dataframe, path) #
   print(M2D_F4.__read__(path)) #This file can now be read by the read function.
+```
 
-  #This will compare the dataframe and the m2d file corresponding to path and update all values with corresponding index,
-  #column to the updated dataframes values.
+This will compare the dataframe and the m2d file corresponding to path and update all values with corresponding index, column to the updated dataframes values.
+
+```
+if __name__ == '__main__':
   pandas_dataframe = M2D_F4.__update__(pandas_dataframe, path) 
   print(M2D_F4.__read__(path))
+```
 
-  #This does the same thing as update, except if a index column pair in the pandas_dataframe doesn't exist in the file then
-  #it simply adds that value into the dataframe as a new row column pair.
+This does the same thing as update, except if a index column pair in the pandas_dataframe doesn't exist in the file then it simply adds that value into the dataframe as a new row column pair.
+
+```
+if __name__ == '__main__':
   pandas_dataframe = M2D_F4.__upsert__(pandas_dataframe, path)
   print(M2D_F4.__read__(path))
 ```
