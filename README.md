@@ -14,17 +14,23 @@ To use the functions, we need to call the function in regards to an alias, in th
 
 ```
 if __name__ == '__main__':
-  pandas_dataframe = M2D.__read__(path, sd, ed)
+  #This will read the csv file from the path from column sd to column ed and return a pandas dataframe
+  pandas_dataframe = M2D_F4.__read__(path, sd, ed) 
   print(pandas_dataframe)
-  
-  pandas_dataframe = M2D.__save__(path, sd, ed)
-  print(pandas_dataframe)
-  
-  pandas_dataframe = M2D.__upsert__(path, sd, ed)
-  print(pandas_dataframe)
-  
-  pandas_dataframe = M2D.__update__(path, sd, ed)
-  print(pandas_dataframe)
+
+  #This will save the pandas_dataframe into some file path as a .m2d file (ie. [filename].m2d_f4)
+  pandas_dataframe = M2D_F4.__save__(pandas_dataframe, path) #
+  print(M2D_F4.__read__(path)) #This file can now be read by the read function.
+
+  #This will compare the dataframe and the m2d file corresponding to path and update all values with corresponding index,
+  #column to the updated dataframes values.
+  pandas_dataframe = M2D_F4.__update__(pandas_dataframe, path) 
+  print(M2D_F4.__read__(path))
+
+  #This does the same thing as update, except if a index column pair in the pandas_dataframe doesn't exist in the file then
+  #it simply adds that value into the dataframe as a new row column pair.
+  pandas_dataframe = M2D_F4.__upsert__(pandas_dataframe, path)
+  print(M2D_F4.__read__(path))
 ```
 
 If you want to change the index and column labels or data types manually:
