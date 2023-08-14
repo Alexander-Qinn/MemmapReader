@@ -119,10 +119,21 @@ This will compare the dataframe and the m2d file corresponding to path and updat
 #### Input:
 ```
 if __name__ == '__main__':
-  pandas_dataframe = M2D_F4.__update__(pandas_dataframe, path) 
-  print(M2D_F4.__read__(path))
+  pandas_dataframe = M2D_F4.__read__(filepath, 20150106, 20150109)
+  updater = pandas_dataframe
+  updater.iloc[0:1,:] = np.nan
+  pandas_dataframe = M2D_F4.__update__(updater, filepath) 
+  print(M2D_F4.__read__(filepath))
 ```
 #### Output:
+```
+           20150105   20150106  20150107  20150108  20150109
+000001.SZ       NaN        NaN       NaN       NaN       NaN
+000002.SZ     14.91  14.360000     14.23     13.59     13.45
+000004.SZ     15.69  16.459999     16.41     16.92     16.43
+000005.SZ       NaN        NaN       NaN       NaN       NaN
+000006.SZ      7.08   6.850000      6.86      6.78      6.70
+```
 
 ### .\_\_upsert__()
 This does the same thing as update, except if a index column pair in the pandas_dataframe doesn't exist in the file then it simply adds that value into the dataframe as a new row column pair.
@@ -130,10 +141,23 @@ This does the same thing as update, except if a index column pair in the pandas_
 #### Input:
 ```
 if __name__ == '__main__':
-  pandas_dataframe = M2D_F4.__upsert__(pandas_dataframe, path)
-  print(M2D_F4.__read__(path))
+  pandas_dataframe = M2D_F4.__read__(filepath, 20150106, 20150109)
+  updater = pandas_dataframe.iloc[:,[0,2]].copy()
+  updater.loc['test',:] = np.nan
+  updater.loc[:,:] = 999
+  M2D_F4.__upsert__(updater, path = filepath)
+  print(M2D_F4.__read__(filepath))
 ```
 #### Output:
+```
+           20150105   20150106  20150107  20150108  20150109
+000001.SZ     999.0  15.780000     999.0     14.96     15.08
+000002.SZ     999.0  14.360000     999.0     13.59     13.45
+000004.SZ     999.0  16.459999     999.0     16.92     16.43
+000005.SZ     999.0        NaN     999.0       NaN       NaN
+000006.SZ     999.0   6.850000     999.0      6.78      6.70
+test          999.0        NaN     999.0       NaN       NaN
+```
 
 If you want to change the index and column labels or data types manually modify the dtype to whatever you need. In this instance SYMBOL_DTYPE is the index datatype and DATE_TYPE is the columns. For now the default has the index as Strings and the columns as ints, this is because the original version was meant for time-series stock data:
 
