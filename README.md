@@ -33,7 +33,7 @@ if __name__ == '__main__':
   print(M2D_F4.__read__(path))
 ```
 
-If you want to change the index and column labels or data types manually:
+If you want to change the index and column labels or data types manually modify the dtype to whatever you need. In this instance SYMBOL_DTYPE is the index datatype and DATE_TYPE is the columns. For now the default has the index as Strings and the columns as ints, this is because the original version was meant for time-series stock data:
 
 ```
 HEADER_DTYPE = np.dtype('U33')
@@ -42,6 +42,4 @@ SYMBOL_DTYPE = np.dtype('U9')
 DATE_TYPE = np.dtype('uint32')
 DATA_DTYPE = np.dtype('float32')
 ```
-simply modify the dtype to whatever you need. In this instance SYMBOL_DTYPE is the index datatype and DATE_TYPE is the columns.
-For now the default has the index as Strings and the columns as ints, this is because the original version was meant for time-series stock data.
 
