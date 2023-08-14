@@ -9,3 +9,5 @@ This is a memory map data structure, implemented from scratch,that directly allo
 
 ## How does it work?
 
+## Example Usages
+
