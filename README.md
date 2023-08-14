@@ -10,4 +10,32 @@ This is a memory map data structure, implemented from scratch,that directly allo
 ## How does it work?
 
 ## Example Usages
+To use the functions, we need to call the function in regards to an alias, in the case of the examples below we will be using M2D_F4, but you can replace that part of each function call with any alias in the M2D.py file.
+
+```
+if __name__ == '__main__':
+  pandas_dataframe = M2D.__read__(path, sd, ed)
+  print(pandas_dataframe)
+  
+  pandas_dataframe = M2D.__save__(path, sd, ed)
+  print(pandas_dataframe)
+  
+  pandas_dataframe = M2D.__upsert__(path, sd, ed)
+  print(pandas_dataframe)
+  
+  pandas_dataframe = M2D.__update__(path, sd, ed)
+  print(pandas_dataframe)
+```
+
+If you want to change the index and column labels or data types manually:
+
+```
+HEADER_DTYPE = np.dtype('U33')
+SIZE_DTYPE = np.dtype('uint32')
+SYMBOL_DTYPE = np.dtype('U9')
+DATE_TYPE = np.dtype('uint32')
+DATA_DTYPE = np.dtype('float32')
+```
+simply modify the dtype to whatever you need. In this instance SYMBOL_DTYPE is the index datatype and DATE_TYPE is the columns.
+For now the default has the index as Strings and the columns as ints, this is because the original version was meant for time-series stock data.
 
