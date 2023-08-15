@@ -1,7 +1,7 @@
 # MemmapReader
 ## Background
 
-I completed this as a joint project with 欧阳俊 in order to increase file reading and writing speed when compared to using the standard pandas pickle library. I have created this in order to more effectively organize data in for backtesting purposes since the functions for this memorymap should run at linear time. In order to use this repo, you need to have numpy and pandas installed.
+I completed this as a joint project with 欧阳俊 in order to increase file reading and writing speed when compared to using the standard pandas pickle library. I have created this in order to more effectively organize data in for backtesting purposes since the functions for this memorymap should run at linear time.
 
 ## What is it?
 
@@ -172,4 +172,8 @@ SYMBOL_DTYPE = np.dtype('U9')
 DATE_TYPE = np.dtype('uint32')
 DATA_DTYPE = np.dtype('float32')
 ```
+## Requirements
+- Python >= 3.5
+- Pandas
+- Numpy
 
