@@ -7,8 +7,6 @@ I completed this as a joint project with 欧阳俊 in order to increase file rea
 
 This is a memory map data structure, implemented from scratch,that directly allocates memory and uses the numpy.flush() function to directly write changes from the array to the disk. In doing so, this becomes a very useful data structure to utilize in order to write and read files in linear time, saving processing speed for a multitude of data management processes. This file will include functions for Reading the data from some start to end, Saving the dataframe from some path into a pandas dataframe, Updating existing values of a dataframe with data from some dataframe, as well as upserting where we update data from existing points and insert new data points for those that don't exist. This also saves the data into the dataframe into the data type we desire, including int8 -> int64, uint8 -> uint64, float16 -> float64 and boolean.
 
-## How does it work?
-
 ## Example Usages
 To use the functions, we need to call the function in regards to an alias, in the case of the examples below we will be using M2D_F4, but you can replace that part of each function call with any alias in the M2D.py file.
 
@@ -165,7 +163,7 @@ if __name__ == '__main__':
 test          999.0        NaN     999.0       NaN       NaN
 ```
 
-If you want to change the index and column labels or data types manually modify the dtype to whatever you need. In this instance SYMBOL_DTYPE is the index datatype and DATE_TYPE is the columns. For now the default has the index as Strings and the columns as ints, this is because the original version was meant for time-series stock data:
+If you want to change the index and column labels or data types manually modify the dtype to whatever you need. In this instance SYMBOL_DTYPE is the index datatype and DATE_TYPE is the columns. For now the default has the index as Strings and the columns as ints, this is because the original version was meant for time-series stock data. This information is in the Memmap2Dim.py file at the top of the file in the M2D(Map) class:
 
 ```
 HEADER_DTYPE = np.dtype('U33')
