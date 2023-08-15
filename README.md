@@ -5,7 +5,7 @@ I completed this as a joint project with 欧阳俊 in order to increase file rea
 
 ## What is it?
 
-This is a memory map data structure, implemented from scratch,that directly allocates memory and uses the numpy.flush() function to directly write changes from the array to the disk. In doing so, this becomes a very useful data structure to utilize in order to write and read files in linear time, saving processing speed for a multitude of data management processes. This file will include functions for Reading the data from some start to end, Saving the dataframe from some path into a pandas dataframe, Updating existing values of a dataframe with data from some dataframe, as well as upserting a process which we update data from existing points and insert new data points for those that don't exist. This also saves the data into the dataframe into the data type we desire, including int8 -> int64, uint8 -> uint64, float16 -> float64 and boolean.
+This is a memory map data structure, implemented from scratch,that directly allocates memory and uses the numpy.flush() function to directly write changes from the array to the disk. In doing so, this becomes a very useful data structure to utilize in order to write and read files in linear time, saving processing speed for a multitude of data management processes. This file will include functions for Reading the data from some start to end, Saving the dataframe from some path into a pandas dataframe, Updating existing values of a dataframe with data from some dataframe, as well as upserting where we update data from existing points and insert new data points for those that don't exist. This also saves the data into the dataframe into the data type we desire, including int8 -> int64, uint8 -> uint64, float16 -> float64 and boolean.
 
 ## How does it work?
 
@@ -29,13 +29,13 @@ if __name__ == '__main__':
 000006.SZ      7.08   6.850000      6.86      6.78      6.70
 ```
 
-### .\_\_read__()
+### .\_\_read__(path:str,sd = None *(optional)*, ed = None *(optional)*) -> pandas.DataFrame
 This will read the file from the path from column sd to column ed and return a pandas dataframe
 
 #### Input:
 ```
 if __name__ == '__main__':
-  pandas_dataframe = M2D_F4.__read__(filepath) 
+  pandas_dataframe = M2D_F4.__read__(filepath) #Note that this is without a sd or ed in which it will read entire file.
   print(pandas_dataframe)
 ```
 #### Output:
@@ -51,7 +51,7 @@ if __name__ == '__main__':
 #### Input:
 ```
 if __name__ == '__main__':
-  pandas_dataframe = M2D_F4.__read__(filepath, 20150106, 20150108) 
+  pandas_dataframe = M2D_F4.__read__(filepath, 20150106, 20150108) #sd and ed are defined so it only reads between them.
   print(pandas_dataframe)
 ```
 #### Output:
@@ -64,11 +64,12 @@ if __name__ == '__main__':
 000006.SZ   6.850000      6.86      6.78
 ```
 
-### .\_\_save__()
+### .\_\_save__(df:pandas.DataFrame, path:str)
 This will save the pandas_dataframe into some file path as a .m2d file (ie. [filename].m2d_f4)
 #### Input:
 ```
 if __name__ == '__main__':
+  #we save the shortened dataframe into the file at filepath 
   pandas_dataframe = M2D_F4.__read__(filepath, 20150106, 20150108) 
   pandas_dataframe = M2D_F4.__save__(pandas_dataframe, newfilepath) 
   print(M2D_F4.__read__(newfilepath)) #This file can now be read by the read function.
@@ -86,6 +87,7 @@ if __name__ == '__main__':
 #### Input:
 ```
 if __name__ == '__main__':
+  #This can also save files that have different row sizes too
   pandas_dataframe = M2D_F4.__read__(filepath, 20150106, 20150108) 
   pandas_dataframe = M2D_F4.__save__(pandas_dataframe.iloc[0:2,:], newfilepath) 
   print(M2D_F4.__read__(newfilepath)) #This file can now be read by the read function.
@@ -101,6 +103,7 @@ if __name__ == '__main__':
 #### Input:
 ```
 if __name__ == '__main__':
+  #Neither dimension has to match the original file.
   pandas_dataframe = M2D_F4.__read__(filepath, 20150106, 20150109) 
   pandas_dataframe = M2D_F4.__save__(pandas_dataframe.iloc[0:2,:], newfilepath) 
   print(M2D_F4.__read__(newfilepath)) #This file can now be read by the read function.
@@ -113,7 +116,7 @@ if __name__ == '__main__':
 
 ```
 
-### .\_\_update__()
+### .\_\_update__(df:pandas.DataFrame, path:str)
 This will compare the dataframe and the m2d file corresponding to path and update all values with corresponding index, column to the updated dataframes values.
 
 #### Input:
@@ -121,8 +124,9 @@ This will compare the dataframe and the m2d file corresponding to path and updat
 if __name__ == '__main__':
   pandas_dataframe = M2D_F4.__read__(filepath, 20150106, 20150109)
   updater = pandas_dataframe
-  updater.iloc[0:1,:] = np.nan
-  pandas_dataframe = M2D_F4.__update__(updater, filepath) 
+  updater.iloc[0:1,:] = np.nan #updater has a different size only containing the first row
+  pandas_dataframe = M2D_F4.__update__(updater, filepath)
+  #updates the dataframe in file at filepath but only the corresponding data points with same index and column.
   print(M2D_F4.__read__(filepath))
 ```
 #### Output:
@@ -135,7 +139,7 @@ if __name__ == '__main__':
 000006.SZ      7.08   6.850000      6.86      6.78      6.70
 ```
 
-### .\_\_upsert__()
+### .\_\_upsert__(df:pandas.DataFrame, path:str)
 This does the same thing as update, except if a index column pair in the pandas_dataframe doesn't exist in the file then it simply adds that value into the dataframe as a new row column pair.
 
 #### Input:
@@ -145,7 +149,9 @@ if __name__ == '__main__':
   updater = pandas_dataframe.iloc[:,[0,2]].copy()
   updater.loc['test',:] = np.nan
   updater.loc[:,:] = 999
+  #updater is a two column dataframe with all values at 999 and [20150105, 20150107] as its columns with a new row called test
   M2D_F4.__upsert__(updater, path = filepath)
+  #Replaces all values with those two columns, sees that test does not exist and adds a new row with test as its index name.
   print(M2D_F4.__read__(filepath))
 ```
 #### Output:
